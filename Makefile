@@ -8,10 +8,17 @@ build:
 #=======================RUN=========================#
 
 run:
-	docker run -p 8080:8080 fast
+	docker run -p 8080:8000 fast
 
 #=======================BUILD AND RUN===============#
 
 all: build run
+
+#=======================TEST=======================#
+
+test: build
+	docker run -e PYTHONPATH=/app fast pytest
+
+#=======================PHONY======================#
 
 PHONY: build run build-run test

@@ -15,4 +15,6 @@ RUN pip install --upgrade pip && \
 
 COPY ./app /app
 
+COPY ./tests /app/tests
+
 CMD ["python", "app.py"]

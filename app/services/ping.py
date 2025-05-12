@@ -13,6 +13,9 @@ async def ping_site(url: str) -> Dict[str, Any]:
         url = 'http://' + url
 
     start_time = time.time()
+    status = "offline"
+    status_code = None
+
     try:
         async with httpx.AsyncClient(timeout=10.0, follow_redirects=True) as client:
             response = await client.get(url)
@@ -37,7 +40,7 @@ async def ping_site(url: str) -> Dict[str, Any]:
         "response_time": response_time
     }
 
-    if status_code:
+    if status_code is not None:
         result["status_code"] = status_code
 
     return result
