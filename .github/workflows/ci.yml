@@ -50,4 +50,10 @@ jobs:
 
       - name: Test Docker container
         run: |
-          make all
+          CONTAINER_ID=$(docker run -d -p 8000:8000 fast:latest)
+
+          sleep 5
+
+          curl -s --retry 3 --retry-delay 2 http://localhost:8000/ | grep "Check Site"
+          
+          docker stop $CONTAINER_ID
