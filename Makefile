@@ -8,7 +8,7 @@ build:
 #=======================RUN=========================#
 
 run:
-	docker run -p 8080:8000 fast
+	docker run --network=host fast
 
 #=======================BUILD AND RUN===============#
 

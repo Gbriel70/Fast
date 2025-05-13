@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Body
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from services.ping import ping_site
-from schemas.site_schemas import SiteRequest, SiteResponse
+from services.nmap import port_scan
+from schemas.site_schemas import SiteRequest, SiteResponse, NmapResponse
 import os
 
 router = APIRouter()
@@ -18,4 +19,10 @@ async def home(request: Request):
 @router.post("/ping", response_model=SiteResponse)
 async def check_site(request: SiteRequest):
     result = await ping_site(request.url)
+    return result
+
+@router.post("/nmap", response_model=NmapResponse)
+async def scan_ports(request: SiteRequest):
+    result = await port_scan(request.url)
+    print("Port scan result:", result)
     return result
