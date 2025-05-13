@@ -21,7 +21,7 @@ async def scan_port(host: str, port: int, timeout: float = 3.0) -> Dict[str, Any
         return False
     
 
-async def port_scan(url: str, common_only = True) -> Dict[str, Any]:
+async def port_scan(url: str, max_ports = 10000, common_only = True) -> Dict[str, Any]:
     if not url.startswith(('http://', 'https://')):
         url = 'http://' + url
 
@@ -62,7 +62,7 @@ async def port_scan(url: str, common_only = True) -> Dict[str, Any]:
 
     start_time = time.time()
     open_ports = []
-    ports_to_scan = list(common_services.keys()) if common_only else range(1, max_ports = 10000 + 1)
+    ports_to_scan = list(common_services.keys()) if common_only else range(1, max_ports + 1)
     ports_count = len(ports_to_scan)
     
     timeout = 1.0
