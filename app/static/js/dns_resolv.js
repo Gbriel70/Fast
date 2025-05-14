@@ -13,7 +13,7 @@ async function dns_resolv()
 	resultDiv.className = 'scanning';
 
 	try{
-		const response = await fetch('/dns_resolv',{
+		const response = await fetch('/dns',{
 				method: 'POST',
 				headers:
 				{
@@ -31,32 +31,26 @@ async function dns_resolv()
 			<p><strong>DNS Server:</strong> ${data.dns_server}</p>
 			<p><strong>DNS Resolution Time:</strong> ${data.resolution_time} seconds</p>
 		`;
-		
-		if (data.dns_records && data.dns_records.length > 0) {
+
+		if (data.ip_address && data.ip_address.length > 0) {
 			html += `
-				<table>
-					<tr>
-						<th>Record Type</th>
-						<th>Record Value</th>
-					</tr>
+				<p><strong>IP Addresses:</strong></p>
+				<ul>
 			`;
 			
-			data.dns_records.forEach(record => {
+			data.dns_records.forEach(ip => {
 				html += `
-					<tr>
-						<td>${record.type}</td>
-						<td>${record.value}</td>
-					</tr>
+					<li>${ip}</li>
 				`;
 			});
 			
-			html += '</table>';
+			html += '</ul>';
 		} else {
-			html += '<p>No DNS records found</p>';
+			html += '<p>No Ip addresses found</p>';
 		}
 		resultDiv.innerHTML = html;
 
-	}catch{
+	}catch (error){
 		resultDiv.className = 'offline';
 		resultDiv.innerHTML = '<p>Error resolving DNS</p>';
 		console.error('Error:', error);

@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from services.ping import ping_site
 from services.nmap import port_scan
+from services.dns_resolver import resolve_dns
 from schemas.site_schemas import SiteRequest, SiteResponse, NmapResponse, DNSResponse
 import os
 
@@ -28,5 +29,5 @@ async def scan_ports(request: SiteRequest):
 
 @router.post("/dns", response_model=DNSResponse)
 async def resolve_dns(request: SiteRequest):
-	result = await resolve_dns(request.url)
+	result = resolve_dns(request.url)
 	return result
