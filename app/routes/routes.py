@@ -28,6 +28,6 @@ async def scan_ports(request: SiteRequest):
     return result
 
 @router.post("/dns", response_model=DNSResponse)
-async def resolve_dns(request: SiteRequest):
-	result = resolve_dns(request.url)
+async def dns_resolve(request: SiteRequest):
+	result = await resolve_dns(request.url)
 	return result

@@ -23,31 +23,50 @@ async function dns_resolv()
 			}
 		);
 
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
 		const data = await response.json();
-		resultDiv.className = 'online';
+		resultDiv.className = data.success ? 'online' : 'offline';
 		let html = `
-			<p><strong>Host:</strong> ${data.host}</p>
-			<p><strong>IP Address:</strong> ${data.ip_address}</p>
-			<p><strong>DNS Server:</strong> ${data.dns_server}</p>
-			<p><strong>DNS Resolution Time:</strong> ${data.resolution_time} seconds</p>
+			<p><strong>Domain:</strong> ${data.domain}</p>
+			<p><strong>Record Type:</strong> ${data.record_types ? data.record_types.join(', ') : 'None'}</p>
+			<p><strong>Resolution Time:</strong>${data.resolution_time} seconds</p>
 		`;
 
-		if (data.ip_address && data.ip_address.length > 0) {
+		if (data.ip_addresses && data.ip_addresses.length > 0) {
 			html += `
 				<p><strong>IP Addresses:</strong></p>
 				<ul>
 			`;
 			
-			data.dns_records.forEach(ip => {
+			data.ip_addresses.forEach(ip => {
 				html += `
 					<li>${ip}</li>
 				`;
 			});
-			
 			html += '</ul>';
 		} else {
 			html += '<p>No Ip addresses found</p>';
 		}
+
+		if (data.cname_records && data.cname_records.length > 0){
+			html += `
+				<p><strong>CNAME Records:</strong></p>
+				<ul>
+			`;
+			
+			data.cname_records.forEach(cname => {
+				html += `
+					<li>${cname}</li>
+				`;
+			});
+			html += '</ul>';
+		}else{
+			html += '<p><strong>CNAME Records:</strong> None (Apex domains like this typically cannot have CNAME records)</p>';
+		}
+
 		resultDiv.innerHTML = html;
 
 	}catch (error){

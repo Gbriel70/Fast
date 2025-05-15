@@ -19,7 +19,9 @@ class NmapResponse(BaseModel):
     ports_scanned: int
 
 class DNSResponse(BaseModel):
-	domain: str
-	ip_addresses: list[str]
-	record_type: str
-	success: bool
+    domain: str
+    ip_addresses: list[str]
+    cname_records: list[str] = []
+    record_types: list[str]
+    success: bool
+    resolution_time: float
